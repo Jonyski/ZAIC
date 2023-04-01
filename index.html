@@ -3,17 +3,23 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="style.css">
 	<title>ZAIC</title>
 </head>
 <body>
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
+	<script src="main.js" defer></script>
+	<main>
 
-	<section>
+	<section id="pieces-container1">
+		<button class="piece-button big-piece P1-piece"></button>
+		<button class="piece-button horizontal-long-piece P1-piece"></button>
+		<button class="piece-button vertical-long-piece P1-piece"></button>
+		<button class="piece-button small-piece P1-piece"></button>
+	</section>
+
+
+	<section id="board">
 		
-	
 		<section class="row">
 			<div class="cell" data-owner="0" data-layer="0" data-x="0" data-y="0" data-pieceID=""></div>
 			<div class="cell" data-owner="0" data-layer="0" data-x="1" data-y="0" data-pieceID=""></div>
@@ -320,9 +326,14 @@
 
 	</section>
 
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
-	<button class="pieceButton"></button>
+	<section id="pieces-container2">
+		<button class="piece-button big-piece P2-piece"></button>
+		<button class="piece-button horizontal-long-piece P2-piece"></button>
+		<button class="piece-button vertical-long-piece P2-piece"></button>
+		<button class="piece-button small-piece P2-piece"></button>
+	</section>
+
+</main>
+
 </body>
 </html>
