@@ -96,8 +96,12 @@ main {
 
 .cell {
 	width: 100%;
-	border: 1px solid white;
+	border: 1px dotted white;
 	border-radius: 3px;
+}
+
+.cell:hover {
+	border: 1px solid white;
 }
 
 .piece-button {
@@ -106,6 +110,7 @@ main {
 	-webkit-box-shadow: 0px 10px 20px -6px rgba(0, 0, 0, 1);
 	-moz-box-shadow: 0px 10px 20px -6px rgba(0, 0, 0, 1);
 	box-shadow: 0px 10px 20px -6px rgba(0, 0, 0, 1);
+	transition-duration: 0.1s;
 }
 
 .big-piece {
@@ -129,15 +134,65 @@ main {
 }
 
 .P1-piece {
+	color: #db5723;
+	font-size: 1.2em;
+
 	background: #f7d040;
 	background: -webkit-linear-gradient(to bottom left, #f7d040, #f5a13b 85%, #f78a45);
 	background: linear-gradient(to bottom left, #f7d040, #f5a13b 85%, #f78a45);
-
 }
 
 .P2-piece {
+	color: #350c94;
+	font-size: 1.2em;
+
+	background: #3b97ed;
 	background: -webkit-linear-gradient(to bottom left, #3b97ed, #3052db 85%, #4430db);
 	background: linear-gradient(to bottom left, #3b97ed, #3052db 85%, #4430db);
 }
+
+.piece-button:hover, #start-stop-btn:hover {
+	transform: scale(1.04);
+	border: 2px solid white;
+}
+
+.piece-button.selected-piece {
+	border: 2px solid white
+}
+
+#start-stop-btn {
+	color: white;
+	font-size: 1.2em;
+	border: 0px solid white;
+	border-radius: 3.5vh;
+	background: black;
+
+	height: 7vh;
+	aspect-ratio: 5/3;
+	width: auto;
+
+	position: absolute;
+	bottom: 2vh;
+	/*code smell, i know, but i want this button centralized*/
+	left: calc(50% - 5.8vh);
+}
+
+#start-stop-btn.start {
+	background: #4de879;
+	background: -webkit-linear-gradient(to bottom, #4de879, #2bc496 85%, #1dad9a);
+	background: linear-gradient(to bottom, #4de879, #2bc496 85%, #1dad9a);
+}
+
+#start-stop-btn.stop {
+	background: #de3551;
+	background: -webkit-linear-gradient(to bottom, #de3551, #b31b2a 85%, #991212);
+	background: linear-gradient(to bottom, #de3551, #b31b2a 85%, #991212);
+}
+
+
+
+
+
+
 
 
