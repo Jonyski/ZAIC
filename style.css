@@ -80,6 +80,7 @@ main {
 	height: 86vh;
 	aspect-ratio: 1/1;
 	max-width: 80vw;
+	max-height: 86vh;
 	margin-top: 2vh;
 
 	display: flex;
@@ -96,6 +97,7 @@ main {
 
 .cell {
 	width: 100%;
+	aspect-ratio: 1/1;
 	border: 1px dotted white;
 	border-radius: 3px;
 }
@@ -157,7 +159,7 @@ main {
 }
 
 .piece-button.selected-piece {
-	border: 2px solid white
+	border: 3px solid white
 }
 
 #start-stop-btn {
