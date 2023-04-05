@@ -85,19 +85,20 @@ main {
 
 	display: flex;
 	flex-direction: column;
-	justify-content: stretch;
 }
 
 .row {
 	height: 100%;
+	width: 100%;
+	max-width: 80vw;
+	border: 1px dotted red;
 
 	display: flex;
-	justify-content: stretch;
+	justify-content: center;
 }
 
 .cell {
-	width: 100%;
-	aspect-ratio: 1/1;
+	aspect-ratio: 1/1 !important;
 	border: 1px dotted white;
 	border-radius: 3px;
 }

@@ -110,8 +110,25 @@ startStopButton.addEventListener("click", e => {
 // UTILITY FUNCTIONS
 
 function removeColumn(columnIndex){
-	for (var i = 0; i < board.length; i++) {
+	let columnLen = board.length;
+	for(let i = 0; i < columnLen; i++) {
 		board[i][columnIndex].remove();
-		board[i].splice(columnIndex, 1)
+		board[i].splice(columnIndex, 1);
 	}
 }
+
+function removeRow(rowIndex){
+	let rowLen = board[rowIndex].length;
+	for(let i = 0; i < rowLen; i++){
+		board[rowIndex][0].remove();
+		board[rowIndex].splice(0, 1);
+	}
+	board.splice(rowIndex, 1);
+	boardChildren[rowIndex].remove();
+}
+
+
+
+
+
+
