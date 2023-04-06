@@ -85,16 +85,19 @@ main {
 
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 }
 
 .row {
-	height: 100%;
-	width: 100%;
+	height: fit-content;
+	width: fit-content;
 	max-width: 80vw;
 	border: 1px dotted red;
 
 	display: flex;
 	justify-content: center;
+
+	align-self: center;
 }
 
 .cell {
@@ -102,6 +105,100 @@ main {
 	border: 1px dotted white;
 	border-radius: 3px;
 }
+
+/*
+ILLEGAL AND HACKY WAY OF MAKING THE BOARD RESPONSIVE, BECAUSE
+FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
+(THIS WORK-AROUND IS KINDA GENIUS THO, ADMIT IT)
+*/
+
+.row:first-child:nth-last-child(16) .cell,
+.row:first-child:nth-last-child(16) ~ .row .cell {
+	max-width: 5.375vh;	
+}
+.row:first-child:nth-last-child(15) .cell,
+.row:first-child:nth-last-child(15) ~ .row .cell {
+	max-width: 5.73vh;	
+}
+.row:first-child:nth-last-child(14) .cell,
+.row:first-child:nth-last-child(14) ~ .row .cell {
+	max-width: 6.14vh;	
+}
+.row:first-child:nth-last-child(13) .cell,
+.row:first-child:nth-last-child(13) ~ .row .cell {
+	max-width: 6.61vh;	
+}
+.row:first-child:nth-last-child(12) .cell,
+.row:first-child:nth-last-child(12) ~ .row .cell {
+	max-width: 7.16vh;	
+}
+.row:first-child:nth-last-child(11) .cell,
+.row:first-child:nth-last-child(11) ~ .row .cell {
+	max-width: 7.81vh;	
+}
+.row:first-child:nth-last-child(10) .cell,
+.row:first-child:nth-last-child(10) ~ .row .cell {
+	max-width: 8.6vh;	
+}
+.row:first-child:nth-last-child(9) .cell,
+.row:first-child:nth-last-child(9) ~ .row .cell {
+	max-width: 9.55vh;	
+}
+.row:first-child:nth-last-child(8) .cell,
+.row:first-child:nth-last-child(8) ~ .row .cell {
+	max-width 10.75vh;	
+}
+
+
+
+
+.cell:first-child:nth-last-child(16),
+.cell:first-child:nth-last-child(16) ~ .cell {
+	width: 5.375vh;
+	max-height: 5.375vh;
+}
+.cell:first-child:nth-last-child(15),
+.cell:first-child:nth-last-child(15) ~ .cell {
+	width: 5.73vh;
+	max-height: 5.73vh;
+}
+.cell:first-child:nth-last-child(14),
+.cell:first-child:nth-last-child(14) ~ .cell {
+	width: 6.14vh;
+	max-height: 6.14vh;
+}
+.cell:first-child:nth-last-child(13),
+.cell:first-child:nth-last-child(13) ~ .cell {
+	width: 6.61vh;
+	max-height: 6.61vh;
+}
+.cell:first-child:nth-last-child(12),
+.cell:first-child:nth-last-child(12) ~ .cell {
+	width: 7.16vh;
+	max-height: 7.16vh;
+}
+.cell:first-child:nth-last-child(11),
+.cell:first-child:nth-last-child(11) ~ .cell {
+	width: 7.81vh;
+	max-height: 7.81vh;
+}
+.cell:first-child:nth-last-child(10),
+.cell:first-child:nth-last-child(10) ~ .cell {
+	width: 8.6vh;
+	max-height: 8.6vh;
+}
+.cell:first-child:nth-last-child(9),
+.cell:first-child:nth-last-child(9) ~ .cell {
+	width: 9.55vh;
+	max-height: 9.55vh;
+}
+.cell:first-child:nth-last-child(8),
+.cell:first-child:nth-last-child(8) ~ .cell {
+	width: 10.75vh;
+	max-height: 10.75vh;
+}
+
+
 
 .cell:hover {
 	border: 1px solid white;
