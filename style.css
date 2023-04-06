@@ -114,39 +114,39 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 
 .row:first-child:nth-last-child(16) .cell,
 .row:first-child:nth-last-child(16) ~ .row .cell {
-	max-width: 5.375vh;	
+	max-width: 5vh;	
 }
 .row:first-child:nth-last-child(15) .cell,
 .row:first-child:nth-last-child(15) ~ .row .cell {
-	max-width: 5.73vh;	
+	max-width: 5.33vh;	
 }
 .row:first-child:nth-last-child(14) .cell,
 .row:first-child:nth-last-child(14) ~ .row .cell {
-	max-width: 6.14vh;	
+	max-width: 5.71vh;	
 }
 .row:first-child:nth-last-child(13) .cell,
 .row:first-child:nth-last-child(13) ~ .row .cell {
-	max-width: 6.61vh;	
+	max-width: 6.15vh;	
 }
 .row:first-child:nth-last-child(12) .cell,
 .row:first-child:nth-last-child(12) ~ .row .cell {
-	max-width: 7.16vh;	
+	max-width: 6.66vh;	
 }
 .row:first-child:nth-last-child(11) .cell,
 .row:first-child:nth-last-child(11) ~ .row .cell {
-	max-width: 7.81vh;	
+	max-width: 7.27vh;	
 }
 .row:first-child:nth-last-child(10) .cell,
 .row:first-child:nth-last-child(10) ~ .row .cell {
-	max-width: 8.6vh;	
+	max-width: 8vh;	
 }
 .row:first-child:nth-last-child(9) .cell,
 .row:first-child:nth-last-child(9) ~ .row .cell {
-	max-width: 9.55vh;	
+	max-width: 8.88vh;	
 }
 .row:first-child:nth-last-child(8) .cell,
 .row:first-child:nth-last-child(8) ~ .row .cell {
-	max-width 10.75vh;	
+	max-width 10vh;	
 }
 
 
@@ -154,48 +154,48 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 
 .cell:first-child:nth-last-child(16),
 .cell:first-child:nth-last-child(16) ~ .cell {
-	width: 5.375vh;
-	max-height: 5.375vh;
+	width: 5vh;
+	max-height: 5vh;
 }
 .cell:first-child:nth-last-child(15),
 .cell:first-child:nth-last-child(15) ~ .cell {
-	width: 5.73vh;
-	max-height: 5.73vh;
+	width: 5.33vh;
+	max-height: 5.33vh;
 }
 .cell:first-child:nth-last-child(14),
 .cell:first-child:nth-last-child(14) ~ .cell {
-	width: 6.14vh;
-	max-height: 6.14vh;
+	width: 5.71vh;
+	max-height: 5.71vh;
 }
 .cell:first-child:nth-last-child(13),
 .cell:first-child:nth-last-child(13) ~ .cell {
-	width: 6.61vh;
-	max-height: 6.61vh;
+	width: 6.15vh;
+	max-height: 6.15vh;
 }
 .cell:first-child:nth-last-child(12),
 .cell:first-child:nth-last-child(12) ~ .cell {
-	width: 7.16vh;
-	max-height: 7.16vh;
+	width: 6.66vh;
+	max-height: 6.66vh;
 }
 .cell:first-child:nth-last-child(11),
 .cell:first-child:nth-last-child(11) ~ .cell {
-	width: 7.81vh;
-	max-height: 7.81vh;
+	width: 7.27vh;
+	max-height: 7.27vh;
 }
 .cell:first-child:nth-last-child(10),
 .cell:first-child:nth-last-child(10) ~ .cell {
-	width: 8.6vh;
-	max-height: 8.6vh;
+	width: 8vh;
+	max-height: 8vh;
 }
 .cell:first-child:nth-last-child(9),
 .cell:first-child:nth-last-child(9) ~ .cell {
-	width: 9.55vh;
-	max-height: 9.55vh;
+	width: 8.88vh;
+	max-height: 8.88vh;
 }
 .cell:first-child:nth-last-child(8),
 .cell:first-child:nth-last-child(8) ~ .cell {
-	width: 10.75vh;
-	max-height: 10.75vh;
+	width: 10vh;
+	max-height: 10vh;
 }
 
 
