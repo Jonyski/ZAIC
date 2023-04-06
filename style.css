@@ -92,7 +92,7 @@ main {
 	height: fit-content;
 	width: fit-content;
 	max-width: 80vw;
-	border: 1px dotted red;
+/*	border: 1px dotted red;*/
 
 	display: flex;
 	justify-content: center;
