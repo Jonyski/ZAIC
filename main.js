@@ -59,8 +59,8 @@ class Player {
 	}
 }
 
-let P1 = new Player(1, ["#f7d040"]);
-let P2 = new Player(2, ["#3b97ed"]);
+let P1 = new Player(1, ["#f7d040", "#f7ba40", "#ed9e37", "#e67a2e", "#d6511c", "#c73814", "#c72c14", "#c20c0c"]);
+let P2 = new Player(2, ["#3b97ed", "#3b79ed", "#3259e6", "#2727d6", "#411dd1", "#3d14c4", "#2f07b3", "#24009c"]);
 
 players.push(P1);
 players.push(P2);
@@ -130,15 +130,15 @@ function playPiece(x, y, pieceType){
 	if(currentPlayer.piecesRemaining.get(pieceType) > 0){
 		//for each cell, we first change the background, then the owner, then the layer
 
-		board[coords.y][coords.x].style.background = currentPlayer.colors[0];
+		board[coords.y][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x].dataset.layer)];
 		board[coords.y][coords.x].dataset.owner = `${currentPlayer.number}`;
 		board[coords.y][coords.x].dataset.layer = `${parseInt(board[coords.y][coords.x].dataset.layer) + 1}`;
 
 		if(pieceType == "big-piece"){
 
-			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
-			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
-			board[coords.y + 1][coords.x + 1].style.background = currentPlayer.colors[0];
+			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y + 1][coords.x].dataset.layer)];
+			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x + 1].dataset.layer)];
+			board[coords.y + 1][coords.x + 1].style.background = currentPlayer.colors[parseInt(board[coords.y + 1][coords.x + 1].dataset.layer)];
 
 			board[coords.y + 1][coords.x].dataset.owner = `${currentPlayer.number}`;
 			board[coords.y][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
@@ -150,7 +150,7 @@ function playPiece(x, y, pieceType){
 
 		} else if(pieceType == "horizontal-long-piece"){
 
-			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
+			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x + 1].dataset.layer)];
 
 			board[coords.y][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
 
@@ -158,7 +158,7 @@ function playPiece(x, y, pieceType){
 
 		} else if(pieceType == "vertical-long-piece"){
 
-			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
+			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y + 1][coords.x].dataset.layer)];
 
 			board[coords.y + 1][coords.x].dataset.owner = `${currentPlayer.number}`;
 
