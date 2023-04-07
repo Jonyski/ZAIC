@@ -129,7 +129,6 @@ function isValidPlay(x, y, pieceType){
 	let layer = parseInt(board[y][x].dataset.layer) + 1;
 
 	// first, check if the piece is not going off-board
-
 	if(pieceType == "big-piece"){
 
 		if(y + 1 >= board.length || x + 1 >= board[y].length){
@@ -153,9 +152,20 @@ function isValidPlay(x, y, pieceType){
 	}
 
 	// now, we check if the piece is neighbor to any friendly piece in the same layer
-
 	if(!hasValidNeighbors(x, y, layer, pieceType, owner)){
 		return false;
+	}
+
+	// stacked pieces have to partialy cover an enemy piece
+	if(layer >= 1){
+		if(!isValidStacking(x, y, layer, pieceType)){
+			return false
+		}
+	}
+
+	// checking if layers aren't off limits
+	if(layer >= 9){
+		return false
 	}
 
 	return true;
@@ -351,14 +361,61 @@ function getNeighbors(x, y, pieceType){
 function hasValidNeighbors(x, y, layer, pieceType, owner){
 
 	let neighbors = getNeighbors(x, y, pieceType);
+	let nonEmptyNeighbors = 0;
 
 	for(let i = 0; i < neighbors.length; i++){
 		if(neighbors[i].dataset.owner == owner && neighbors[i].dataset.layer == layer){
 			return false;
 		}
+		if(neighbors[i].dataset.owner != 0){
+			nonEmptyNeighbors++;
+		}
 	}
+
+	if(nonEmptyNeighbors == 0 && currentTurn != 0 && layer == 1){
+		// you cant place a lonely piece, except on the first turn, ofc
+		return false;
+	}
+
 	return true;
 }
 
+function isValidStacking(x, y, layer, pieceType){
 
+	let layerBelow = parseInt(board[y][x].dataset.layer);
+
+	if(pieceType == "big-piece"){
+		if( board[y][x].dataset.layer != layer - 1 ||
+			board[y][x + 1].dataset.layer != layerBelow ||
+			board[y + 1][x + 1].dataset.layer != layerBelow ||
+			board[y + 1][x].dataset.layer != layerBelow
+			){
+			return false
+		}
+	} else if(pieceType == "horizontal-long-piece"){
+		if( board[y][x].dataset.layer != layer - 1 ||
+			board[y][x + 1].dataset.layer != layerBelow
+			){
+
+			return false
+		}
+	} else if(pieceType == "vertical-long-piece"){
+		if( board[y][x].dataset.layer != layer - 1 ||
+			board[y + 1][x].dataset.layer != layerBelow
+			){
+
+			return false
+		}
+	} else {
+		if(board[y][x].dataset.layer != layer - 1){
+			return false
+		}
+	}
+
+	return true;
+}
+
+function isCoveringEnemy(x, y, layer, pieceType){
+	
+}
 
