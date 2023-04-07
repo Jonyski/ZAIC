@@ -128,7 +128,7 @@ function playPiece(x, y, pieceType){
 	let coords = getIndexesOfCellByXY(x, y);
 
 	if(currentPlayer.piecesRemaining.get(pieceType) > 0){
-		//for each cell, we first change the background, then the owner, then the layer
+		//for each cell, we first change the background, then the owner, then the layer. finally, we resize the board.
 
 		board[coords.y][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x].dataset.layer)];
 		board[coords.y][coords.x].dataset.owner = `${currentPlayer.number}`;
@@ -148,6 +148,8 @@ function playPiece(x, y, pieceType){
 			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
 			board[coords.y + 1][coords.x + 1].dataset.layer = `${parseInt(board[coords.y + 1][coords.x + 1].dataset.layer) + 1}`;
 
+			resizeBoard(coords.x, coords.x + 1, coords.y, coords.y + 1);
+
 		} else if(pieceType == "horizontal-long-piece"){
 
 			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x + 1].dataset.layer)];
@@ -156,6 +158,8 @@ function playPiece(x, y, pieceType){
 
 			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
 
+			resizeBoard(coords.x, coords.x + 1, coords.y, coords.y);
+
 		} else if(pieceType == "vertical-long-piece"){
 
 			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y + 1][coords.x].dataset.layer)];
@@ -163,9 +167,17 @@ function playPiece(x, y, pieceType){
 			board[coords.y + 1][coords.x].dataset.owner = `${currentPlayer.number}`;
 
 			board[coords.y + 1][coords.x].dataset.layer = `${parseInt(board[coords.y + 1][coords.x].dataset.layer) + 1}`
+		
+			resizeBoard(coords.x, coords.x, coords.y, coords.y + 1);
+
+		} else if(pieceType == "small-piece"){
+
+			resizeBoard(coords.x, coords.x, coords.y, coords.y);
+
 		}
 
 		currentPlayer.reducePieceCount(pieceType);
+
 
 		//switches the current player (ternary op)
 		currentPlayer = currentPlayer == P1 ? P2 : P1;
@@ -208,8 +220,40 @@ function removeRow(rowIndex){
 	boardChildren[rowIndex].remove();
 }
 
+function resizeBoard(leftLim, rightLim, topLim, bottomLim){
+	let columnsCount = board[0].length;
+	let rowsCount = board.length;
+
+	console.log("resizing board")
+	if(rightLim >= 8){
+		for(let i = 0; i <= (rightLim % 8); i++){
+			removeColumn(0);
+		}
+	}
+	let deltaBoardLeftLim = columnsCount - leftLim;
+	if(deltaBoardLeftLim > 8){
+		console.log(deltaBoardLeftLim);
+		for(let i = 1; i <= (deltaBoardLeftLim - 8); i++) {
+			console.log(`removing the column number ${columnsCount - i}`)
+			removeColumn(board[0].length - 1);
+		}
+	}
+	if(bottomLim >= 8){
+		for(let i = 0; i <= (bottomLim % 8); i++){
+			removeRow(0);
+		}
+	}
+	let deltaBoardTopLim = rowsCount - topLim;
+	if(deltaBoardTopLim > 8){
+		console.log(deltaBoardTopLim);
+		for(let i = 1; i <= (deltaBoardTopLim - 8); i++) {
+			console.log(`removing the column number ${rowsCount - i}`)
+			removeRow(board.length - 1);
+		}
+	}
+}
 
 
 
-
-
+// 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+//				  ^ 	
