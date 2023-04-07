@@ -26,6 +26,7 @@ be used on the entire program, and also create the players
 
 let currentTurn = 0;
 let playedPieces = [];
+let currentPieceID = 0;
 let players = [];
 
 class Player {
@@ -121,18 +122,58 @@ for(let i = 0; i < cells.length; i++){
 
 // GAME DEFINING FUNCTIONS
 
-//funcion isValidPlacing(x, y, pieceType){ TODO }
+function isValidPlay(x, y, pieceType){
+
+	// the layer var is more like "what the layer wil be after the piece is placed"
+	let owner = currentPlayer.number;
+	let layer = parseInt(board[y][x].dataset.layer) + 1;
+
+	// first, check if the piece is not going off-board
+
+	if(pieceType == "big-piece"){
+
+		if(y + 1 >= board.length || x + 1 >= board[y].length){
+			return false;
+		}
+
+	} else if(pieceType == "horizontal-long-piece"){
+
+		if(x + 1 >= board[y].length){
+			return false;
+		}
+
+	} else if(pieceType == "vertical-long-piece"){
+
+		if(y + 1 >= board.length){
+			return false;
+		}
+
+	} else if(pieceType == "small-piece"){
+
+	}
+
+	// now, we check if the piece is neighbor to any friendly piece in the same layer
+
+	if(!hasValidNeighbors(x, y, layer, pieceType, owner)){
+		return false;
+	}
+
+	return true;
+	// CONGRATULATIONS, YOU FOLLOWED THE RULES! :D
+}
 
 function playPiece(x, y, pieceType){
-	//find index of the cell in the board array
+	// find index of the cell in the board array
 	let coords = getIndexesOfCellByXY(x, y);
 
-	if(currentPlayer.piecesRemaining.get(pieceType) > 0){
-		//for each cell, we first change the background, then the owner, then the layer. finally, we resize the board.
+	if(currentPlayer.piecesRemaining.get(pieceType) > 0 && isValidPlay(coords.x, coords.y, pieceType)){
+		// for each cell, we first change the background, then the owner, then the layer, then the piece ID.
+		// finally, we resize the board.
 
 		board[coords.y][coords.x].style.background = currentPlayer.colors[parseInt(board[coords.y][coords.x].dataset.layer)];
 		board[coords.y][coords.x].dataset.owner = `${currentPlayer.number}`;
 		board[coords.y][coords.x].dataset.layer = `${parseInt(board[coords.y][coords.x].dataset.layer) + 1}`;
+		board[coords.y][coords.x].dataset.pieceid = `${currentPieceID}`;
 
 		if(pieceType == "big-piece"){
 
@@ -148,6 +189,10 @@ function playPiece(x, y, pieceType){
 			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
 			board[coords.y + 1][coords.x + 1].dataset.layer = `${parseInt(board[coords.y + 1][coords.x + 1].dataset.layer) + 1}`;
 
+			board[coords.y + 1][coords.x].dataset.pieceid = `${currentPieceID}`;
+			board[coords.y][coords.x + 1].dataset.pieceid = `${currentPieceID}`;
+			board[coords.y + 1][coords.x + 1].dataset.pieceid = `${currentPieceID}`;
+
 			resizeBoard(coords.x, coords.x + 1, coords.y, coords.y + 1);
 
 		} else if(pieceType == "horizontal-long-piece"){
@@ -157,6 +202,8 @@ function playPiece(x, y, pieceType){
 			board[coords.y][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
 
 			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
+
+			board[coords.y][coords.x + 1].dataset.pieceid = `${currentPieceID}`;
 
 			resizeBoard(coords.x, coords.x + 1, coords.y, coords.y);
 
@@ -168,6 +215,8 @@ function playPiece(x, y, pieceType){
 
 			board[coords.y + 1][coords.x].dataset.layer = `${parseInt(board[coords.y + 1][coords.x].dataset.layer) + 1}`
 		
+			board[coords.y + 1][coords.x].dataset.pieceid = `${currentPieceID}`;
+
 			resizeBoard(coords.x, coords.x, coords.y, coords.y + 1);
 
 		} else if(pieceType == "small-piece"){
@@ -182,9 +231,13 @@ function playPiece(x, y, pieceType){
 		//switches the current player (ternary op)
 		currentPlayer = currentPlayer == P1 ? P2 : P1;
 		currentTurn++;
+		playedPieces.push(currentPieceID);
+		currentPieceID++;
 
-	} else {
+	} else if(currentPlayer.piecesRemaining.get(pieceType) == 0){
 		window.alert("no pieces remaining");
+	} else {
+		window.alert("this is not a valid play");
 	}
 
 }
@@ -224,7 +277,6 @@ function resizeBoard(leftLim, rightLim, topLim, bottomLim){
 	let columnsCount = board[0].length;
 	let rowsCount = board.length;
 
-	console.log("resizing board")
 	if(rightLim >= 8){
 		for(let i = 0; i <= (rightLim % 8); i++){
 			removeColumn(0);
@@ -232,9 +284,7 @@ function resizeBoard(leftLim, rightLim, topLim, bottomLim){
 	}
 	let deltaBoardLeftLim = columnsCount - leftLim;
 	if(deltaBoardLeftLim > 8){
-		console.log(deltaBoardLeftLim);
 		for(let i = 1; i <= (deltaBoardLeftLim - 8); i++) {
-			console.log(`removing the column number ${columnsCount - i}`)
 			removeColumn(board[0].length - 1);
 		}
 	}
@@ -245,15 +295,70 @@ function resizeBoard(leftLim, rightLim, topLim, bottomLim){
 	}
 	let deltaBoardTopLim = rowsCount - topLim;
 	if(deltaBoardTopLim > 8){
-		console.log(deltaBoardTopLim);
 		for(let i = 1; i <= (deltaBoardTopLim - 8); i++) {
-			console.log(`removing the column number ${rowsCount - i}`)
 			removeRow(board.length - 1);
 		}
 	}
 }
 
+function getNeighbors(x, y, pieceType){
+	// n is short for neighbor, just to make the code a little more concise
+	let n = [];
+	let maxX = board[y].length;
+	let maxY = board.length;
+
+	if(pieceType == "big-piece"){
+
+		(y - 1) > 0 ? n.push(board[y - 1][x]) : 0 + 0;
+		(y - 1) > 0 && (x + 1) < maxX ? n.push(board[y - 1][x + 1]) : 0 + 0;
+		(x + 2) < maxX ? n.push(board[y][x + 2]) : 0 + 0;
+		(y + 1) < maxY && (x + 2) < maxX ? n.push(board[y + 1][x + 2]) : 0 + 0;
+		(y + 2) < maxY && (x + 1) < maxX ? n.push(board[y + 2][x + 1]) : 0 + 0;
+		(y + 2) < maxY ? n.push(board[y + 2][x]) : 0 + 0;
+		(y + 1) < maxY && (x - 1) > 0 ? n.push(board[y + 1][x - 1]) : 0 + 0;
+		(x - 1) > 0 ? n.push(board[y][x - 1]) : 0 + 0;
+
+	} else if(pieceType == "horizontal-long-piece"){
+
+		(y - 1) > 0 ? n.push(board[y - 1][x]) : 0 + 0;
+		(y - 1) > 0 && (x + 1) < maxX ? n.push(board[y - 1][x + 1]) : 0 + 0;
+		(x + 2) < maxX ? n.push(board[y][x + 2]) : 0 + 0;
+		(y + 1) < maxY && (x + 1) < maxX ? n.push(board[y + 1][x + 1]) : 0 + 0;
+		(y + 1) < maxY ? n.push(board[y + 1][x]) : 0 + 0;
+		(x - 1) > 0 ? n.push(board[y][x - 1]) : 0 + 0;
+
+	} else if(pieceType == "vertical-long-piece"){
+
+		(y - 1) > 0 ? n.push(board[y - 1][x]) : 0 + 0;
+		(x + 1) < maxX ? n.push(board[y][x + 1]) : 0 + 0;
+		(y + 1) < maxY && (x + 1) < maxX ? n.push(board[y + 1][x + 1]) : 0 + 0;
+		(y + 2) < maxY ? n.push(board[y + 2][x]) : 0 + 0;
+		(y + 1) < maxY && (x - 1) > 0 ? n.push(board[y + 1][x - 1]) : 0 + 0;
+		(x - 1) > 0 ? n.push(board[y][x - 1]) : 0 + 0;
+
+	} else if(pieceType == "small-piece"){
+
+		(y - 1) > 0 ? n.push(board[y - 1][x]) : 0 + 0;
+		(x + 1) < maxX ? n.push(board[y][x + 1]) : 0 + 0;
+		(y + 1) < maxY ? n.push(board[y + 1][x]) : 0 + 0;
+		(x - 1) > 0 ? n.push(board[y][x - 1]) : 0 + 0;
+
+	}
+	return n;
+
+}
+
+function hasValidNeighbors(x, y, layer, pieceType, owner){
+
+	let neighbors = getNeighbors(x, y, pieceType);
+
+	for(let i = 0; i < neighbors.length; i++){
+		if(neighbors[i].dataset.owner == owner && neighbors[i].dataset.layer == layer){
+			return false;
+		}
+	}
+	return true;
+}
 
 
-// 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-//				  ^ 	
+
