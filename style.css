@@ -102,8 +102,8 @@ main {
 
 .cell {
 	aspect-ratio: 1/1 !important;
-	border: 1px dotted white;
-	border-radius: 3px;
+	border: 1px dashed #555;
+	border-radius: 0px;
 }
 
 /*
@@ -204,6 +204,10 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 	border: 1px solid white;
 }
 
+.cell[data-owner="1"],.cell[data-owner="2"] {
+	border: 0px solid #555;
+}
+
 .piece-button {
 	border: 0px solid white;
 	border-radius: 5px;
@@ -234,7 +238,7 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 }
 
 .P1-piece {
-	color: #db5723;
+	color: #cf4813;
 	font-size: 1.2em;
 
 	background: #f7d040;
@@ -243,7 +247,7 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 }
 
 .P2-piece {
-	color: #350c94;
+	color: #272c8c;
 	font-size: 1.2em;
 
 	background: #3b97ed;

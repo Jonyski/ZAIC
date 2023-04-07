@@ -32,28 +32,31 @@ class Player {
 	constructor(playerNum, colors){
 		this.number = playerNum;
 		this.selectedPiece = "big-piece";
-		this.bigPieces = 8;
-		this.longPieces = 8;
-		this.smallPieces = 3;
+		this.piecesRemaining = new Map();
+
+		this.piecesRemaining.set("big-piece", 8);
+		this.piecesRemaining.set("horizontal-long-piece", 8);
+		this.piecesRemaining.set("vertical-long-piece", 8);
+		this.piecesRemaining.set("small-piece", 3);
+
 		this.points = 0;
 		this.colors = colors
 	}
+	reducePieceCount(pieceType){
 
-	// playPiece(){
-	// 	switch(this.selectedPiece){
-	// 	case "big-piece":
-	// 		this.bigPieces -= 1;
-	// 		document.querySelector(`.big-piece .P${this.number}-piece`).innerHTML = this.bigPieces;
-	// 	case "horizontal-long-piece":
-	// 	case "vertical-long-piece":
-	// 		this.longPieces -= 1;
-	// 		document.querySelector(`.horizontal-long-piece .P${this.number}-piece`).innerHTML = this.longPieces;
-	// 		document.querySelector(`.vertical-long-piece .P${this.number}-piece`).innerHTML = this.longPieces;
-	// 	case "small-piece":
-	// 		this.smallPieces -= 1;
-	// 		document.querySelector(`.small-piece .P${this.number}-piece`).innerHTML = this.smallPieces;
-	// 	}
-	// }
+		if(pieceType == "horizontal-long-piece" || pieceType == "vertical-long-piece"){
+			let newPieceCount = this.piecesRemaining.get(pieceType) - 1
+			this.piecesRemaining.set("horizontal-long-piece", newPieceCount);
+			this.piecesRemaining.set("vertical-long-piece", newPieceCount);
+			document.querySelector(`.P${this.number}-piece.horizontal-long-piece`).innerHTML = `x${this.piecesRemaining.get(pieceType)}`
+			document.querySelector(`.P${this.number}-piece.vertical-long-piece`).innerHTML = `x${this.piecesRemaining.get(pieceType)}`
+		} else {
+			this.piecesRemaining.set(pieceType, this.piecesRemaining.get(pieceType) - 1);
+			document.querySelector(`.P${this.number}-piece.${this.selectedPiece}`).innerHTML = `x${this.piecesRemaining.get(pieceType)}`		
+		}
+
+
+	}
 }
 
 let P1 = new Player(1, ["#f7d040"]);
@@ -113,12 +116,7 @@ let cells = document.getElementsByClassName("cell");
 for(let i = 0; i < cells.length; i++){
 	cells[i].addEventListener("click", e => {
 		playPiece(e.target.dataset.x, e.target.dataset.y, currentPlayer.selectedPiece);
-
-		//switches the current player (ternary op)
-		currentPlayer = currentPlayer == P1 ? P2 : P1;
-		currentTurn++;
-		console.log(currentPlayer)
-	})
+	});
 }
 
 // GAME DEFINING FUNCTIONS
@@ -129,21 +127,56 @@ function playPiece(x, y, pieceType){
 	//find index of the cell in the board array
 	let coords = getIndexesOfCellByXY(x, y);
 
-	board[coords.y][coords.x].style.background = currentPlayer.colors[0];
+	if(currentPlayer.piecesRemaining.get(pieceType) > 0){
+		//for each cell, we first change the background, then the owner, then the layer
 
-	//TODO: change element dataset.owner
+		board[coords.y][coords.x].style.background = currentPlayer.colors[0];
+		board[coords.y][coords.x].dataset.owner = `${currentPlayer.number}`;
+		board[coords.y][coords.x].dataset.layer = `${parseInt(board[coords.y][coords.x].dataset.layer) + 1}`;
 
-	if(currentPlayer.selectedPiece == "big-piece"){
-		board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
-		board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
-		board[coords.y + 1][coords.x + 1].style.background = currentPlayer.colors[0];
-	} else if(currentPlayer.selectedPiece == "horizontal-long-piece"){
-		board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
-	} else if(currentPlayer.selectedPiece == "vertical-long-piece"){
-		board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
+		if(pieceType == "big-piece"){
+
+			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
+			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
+			board[coords.y + 1][coords.x + 1].style.background = currentPlayer.colors[0];
+
+			board[coords.y + 1][coords.x].dataset.owner = `${currentPlayer.number}`;
+			board[coords.y][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
+			board[coords.y + 1][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
+
+			board[coords.y + 1][coords.x].dataset.layer = `${parseInt(board[coords.y + 1][coords.x].dataset.layer) + 1}`;
+			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
+			board[coords.y + 1][coords.x + 1].dataset.layer = `${parseInt(board[coords.y + 1][coords.x + 1].dataset.layer) + 1}`;
+
+		} else if(pieceType == "horizontal-long-piece"){
+
+			board[coords.y][coords.x + 1].style.background = currentPlayer.colors[0];
+
+			board[coords.y][coords.x + 1].dataset.owner = `${currentPlayer.number}`;
+
+			board[coords.y][coords.x + 1].dataset.layer = `${parseInt(board[coords.y][coords.x + 1].dataset.layer) + 1}`;
+
+		} else if(pieceType == "vertical-long-piece"){
+
+			board[coords.y + 1][coords.x].style.background = currentPlayer.colors[0];
+
+			board[coords.y + 1][coords.x].dataset.owner = `${currentPlayer.number}`;
+
+			board[coords.y + 1][coords.x].dataset.layer = `${parseInt(board[coords.y + 1][coords.x].dataset.layer) + 1}`
+		}
+
+		currentPlayer.reducePieceCount(pieceType);
+
+		//switches the current player (ternary op)
+		currentPlayer = currentPlayer == P1 ? P2 : P1;
+		currentTurn++;
+
+	} else {
+		window.alert("no pieces remaining");
 	}
 
 }
+
 
 // UTILITY FUNCTIONS
 function getIndexesOfCellByXY(x, y){
