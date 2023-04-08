@@ -126,6 +126,16 @@ for(let i = 0; i < cells.length; i++){
 	cells[i].addEventListener("click", e => {
 		playPiece(e.target.dataset.x, e.target.dataset.y, currentPlayer.selectedPiece);
 	});
+
+	cells[i].addEventListener("mouseenter", e => {
+		if(e.target.dataset.layer > 0){
+			e.target.innerHTML = e.target.dataset.layer;
+		}
+	});
+
+	cells[i].addEventListener("mouseleave", e => {
+		e.target.innerHTML = "";
+	});
 }
 
 // GAME DEFINING FUNCTIONS

@@ -101,9 +101,23 @@ main {
 }
 
 .cell {
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+	font-size: 200%;
+
 	aspect-ratio: 1/1 !important;
 	border: 1px dashed #555;
 	border-radius: 0px;
+}
+
+.cell[data-owner = "1"] {
+	color: #cf4813;
+}
+
+.cell[data-owner = "2"] {
+	color: #272c8c;
 }
 
 /*
@@ -350,6 +364,10 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 	#board {
 		margin-top: 0vh;
 		margin-left: 10%;
+	}
+
+	.cell {
+		font-size: 1.3em;
 	}
 }
 
