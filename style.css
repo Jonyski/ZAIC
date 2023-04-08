@@ -297,7 +297,61 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 	background: linear-gradient(to bottom, #de3551, #b31b2a 85%, #991212);
 }
 
+@media(max-width: 824px){
+	main {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
+	#board {
+		height: 60vh;
+		max-height: 60vh;
+	}
+
+	#pieces-container1, #pieces-container2 {
+	width: 100%;
+	height: 12vh;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	}
+
+	.big-piece {
+		width: 20%;
+		aspect-ratio: 1/1;
+	}
+
+	.small-piece {
+		width: 10%;
+		aspect-ratio: 1/1;
+	}
+
+	.horizontal-long-piece {
+		width: 20%;
+		aspect-ratio: 2/1;
+	}
+
+	.vertical-long-piece {
+		width: 10%;
+		aspect-ratio: 1/2;
+	}
+
+	.P1-piece {
+		margin-top: 5vh;
+	}
+
+	.P2-piece {
+		bottom: 10vh;
+	}
+
+	#board {
+		margin-top: 0vh;
+		margin-left: 10%;
+	}
+}
 
 
 
