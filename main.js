@@ -15,6 +15,13 @@ for (let i = 0; i < boardChildren.length; i++){
 	}
 }
 
+board[7][7].classList.add("center-cells");
+board[7][8].classList.add("center-cells");
+board[8][7].classList.add("center-cells");
+board[8][8].classList.add("center-cells");
+
+let emptyBoard = deepCopy2DArray(board);
+
 console.log("The board is ready to use!");
 console.log(board);
 
@@ -28,6 +35,7 @@ let currentTurn = 0;
 let playedPieces = [];
 let currentPieceID = 0;
 let players = [];
+let gameStarted = true;
 
 class Player {
 	constructor(playerNum, colors){
@@ -102,11 +110,11 @@ startStopButton.addEventListener("click", e => {
 	if(e.target.classList[0] == "start"){
 		console.log("game started");
 		e.target.innerHTML = "STOP";
-		//TODO
+		startGame();
 	} else {
 		console.log("game ended");
 		e.target.innerHTML = "START";
-		//TODO
+		endGame();
 	}
 	e.target.classList.toggle("stop");
 	e.target.classList.toggle("start");
@@ -124,30 +132,61 @@ for(let i = 0; i < cells.length; i++){
 
 function isValidPlay(x, y, pieceType){
 
+	if(!gameStarted){
+		return false
+	}
+
 	// the layer var is more like "what the layer wil be after the piece is placed"
 	let owner = currentPlayer.number;
 	let layer = parseInt(board[y][x].dataset.layer) + 1;
 
 	// first, check if the piece is not going off-board
 	if(pieceType == "big-piece"){
+		if(currentTurn == 0){
+			if(x != 7 || y != 7){
+				window.alert("please start at the middle of the board");
+				return false
+			}
+		}
 
 		if(y + 1 >= board.length || x + 1 >= board[y].length){
 			return false;
 		}
 
 	} else if(pieceType == "horizontal-long-piece"){
+		if(currentTurn == 0){
+			if(!(x == 7 && y == 7) && !(x == y && y == 8)){
+				console.log(`x:${x} y:${y}`);
+				window.alert("please start at the middle of the board");
+				return false
+			}
+		}
 
 		if(x + 1 >= board[y].length){
 			return false;
 		}
 
 	} else if(pieceType == "vertical-long-piece"){
+		if(currentTurn == 0){
+			if(!(x == 7 && y == 7) && !(x == 8 && y == 7)){
+				console.log(`x:${x} y:${y}`);
+				window.alert("please start at the middle of the board");
+				return false
+			}
+		}
 
 		if(y + 1 >= board.length){
 			return false;
 		}
 
 	} else if(pieceType == "small-piece"){
+		if(currentTurn == 0){
+			if(!(x == 7 && y == 7) && !(x == 7 && y == 8) && !(x == 8 && y == 7) && !(x == 8 && y == 8)){
+				console.log(`x:${x} y:${y}`);
+				window.alert("please start at the middle of the board");
+				return false
+			}
+		}
 
 	}
 
@@ -163,19 +202,27 @@ function isValidPlay(x, y, pieceType){
 			console.log("not covering an enemy");
 			return false;
 		}
-		if(!isValidStacking(x, y, layer, pieceType)){
-			console.log("not a valid stacking, your piece cant float");
-			return false;
-		}
 		if(isCompletelyCoveringPiece(x, y, pieceType)){
 			console.log("covering a piece intirely");
 			return false;
 		}
 	}
+	if(!isValidStacking(x, y, layer, pieceType)){
+		console.log("not a valid stacking, your piece cant float");
+		return false;
+	}
 
 	// checking if layers aren't off limits
 	if(layer >= 9){
 		return false;
+	}
+
+	// remove first turn highlight
+	if(currentTurn == 0){
+		board[7][7].classList.remove("center-cells");
+		board[7][8].classList.remove("center-cells");
+		board[8][7].classList.remove("center-cells");
+		board[8][8].classList.remove("center-cells");
 	}
 
 	return true;
@@ -510,4 +557,69 @@ function deepCopy2DArray(arr){
     }
   });
   return copy;
+}
+
+const style = (node, styles) => Object.keys(styles).forEach(key => node.style[key] = styles[key])
+
+function resetBoard(){
+	boardElement.innerHTML = ""
+
+	let script = document.createElement("script");
+	script.setAttribute("src", "./main.js");
+	document.body.appendChild(script);
+
+
+	for(let i = 0; i <= 16; i++){
+		let rowEl = document.createElement("section");
+		rowEl.classList.add("row");
+		boardElement.appendChild(rowEl);
+
+		style(rowEl, {
+		height: "fit-content",
+		width: "fit-content",
+		maxWidth: "80vw",
+
+		display: "flex",
+		justifyContent: "center",
+
+		alignSelf: "center"
+		})
+	}
+
+	let rowsList = boardElement.children;
+
+	for(let i = 0; i <= 16; i++){
+		for(let j = 0; j <= 16; j++){
+			let cellEl = document.createElement("div");
+
+			cellEl.setAttribute("data-owner", "0");
+			cellEl.setAttribute("data-layer", "0");
+			cellEl.setAttribute("data-x", `${j}`);
+			cellEl.setAttribute("data-y", `${i}`);
+			cellEl.setAttribute("data-pieceID", "");
+
+			cellEl.classList.add("cell");
+
+			rowsList[i].appendChild(cellEl);
+
+			style(cellEl, {
+			aspectRatio: "1/1 !important",
+			border: "1px dashed #555",
+			borderRadius: "0px",
+			maxWidth: "5vh",
+			width: "5vh",
+			maxHeight: "5vh"
+			})
+		}
+	}
+}
+
+function startGame(){
+	gameStarted = true;
+
+	// resetBoard();
+}
+
+function endGame(){
+	gameStarted = false;
 }

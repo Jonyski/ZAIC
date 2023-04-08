@@ -208,6 +208,10 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 	border: 0px solid #555;
 }
 
+.center-cells {
+	border: 1px dashed white;
+}
+
 .piece-button {
 	border: 0px solid white;
 	border-radius: 5px;
