@@ -153,19 +153,29 @@ function isValidPlay(x, y, pieceType){
 
 	// now, we check if the piece is neighbor to any friendly piece in the same layer
 	if(!hasValidNeighbors(x, y, layer, pieceType, owner)){
+		console.log("invalid neighbors");
 		return false;
 	}
 
 	// stacked pieces have to partialy cover an enemy piece
-	if(layer >= 1){
+	if(layer - 1 > 0){
+		if(!isCoveringEnemy(x, y, layer, pieceType)){
+			console.log("not covering an enemy");
+			return false;
+		}
 		if(!isValidStacking(x, y, layer, pieceType)){
-			return false
+			console.log("not a valid stacking, your piece cant float");
+			return false;
+		}
+		if(isCompletelyCoveringPiece(x, y, pieceType)){
+			console.log("covering a piece intirely");
+			return false;
 		}
 	}
 
 	// checking if layers aren't off limits
 	if(layer >= 9){
-		return false
+		return false;
 	}
 
 	return true;
@@ -247,7 +257,7 @@ function playPiece(x, y, pieceType){
 	} else if(currentPlayer.piecesRemaining.get(pieceType) == 0){
 		window.alert("no pieces remaining");
 	} else {
-		window.alert("this is not a valid play");
+		console.log("this is not a valid play");
 	}
 
 }
@@ -416,6 +426,88 @@ function isValidStacking(x, y, layer, pieceType){
 }
 
 function isCoveringEnemy(x, y, layer, pieceType){
-	
+	let enemy = currentPlayer.number == 1 ? "2" : "1";
+
+	if(pieceType == "big-piece"){
+		if( board[y][x].dataset.owner == enemy ||
+			board[y][x + 1].dataset.owner == enemy ||
+			board[y + 1][x + 1].dataset.owner == enemy ||
+			board[y + 1][x].dataset.owner == enemy
+			){
+			return true;
+		}
+	} else if(pieceType == "horizontal-long-piece"){
+		if( board[y][x].dataset.owner == enemy ||
+			board[y][x + 1].dataset.owner == enemy
+			){
+
+			return true;
+		}
+	} else if(pieceType == "vertical-long-piece"){
+		if( board[y][x].dataset.owner == enemy ||
+			board[y + 1][x].dataset.owner == enemy
+			){
+
+			return true;
+		}
+	} else {
+		if(board[y][x].dataset.owner == enemy){
+			return true;
+		}
+	}
+
+	return false;
 }
 
+function isCompletelyCoveringPiece(x, y, pieceType){
+	let boardClone = deepCopy2DArray(board);
+	let remainingPieceIDs = [];
+
+	if(pieceType == "big-piece"){
+		boardClone[y].splice(x, 1);
+		boardClone[y].splice(x, 1);
+		boardClone[y + 1].splice(x, 1);
+		boardClone[y + 1].splice(x, 1);
+			
+	} else if(pieceType == "horizontal-long-piece"){
+		boardClone[y].splice(x, 1);
+		boardClone[y].splice(x, 1);
+	} else if(pieceType == "vertical-long-piece"){
+		boardClone[y].splice(x, 1);
+		boardClone[y + 1].splice(x, 1);
+	} else {
+		boardClone[y].splice(x, 1);
+	}
+
+	for(let i = 0; i < boardClone.length; i++){
+		for(let j = 0; j < boardClone[i].length; j++){
+			if((!remainingPieceIDs.includes(parseInt(boardClone[i][j].dataset.pieceid)) && boardClone[i][j].dataset.pieceid != "")){
+				remainingPieceIDs.push(parseInt(boardClone[i][j].dataset.pieceid));
+			}
+		}
+	}
+
+	console.log(boardClone);
+	console.log(remainingPieceIDs.sort());
+	console.log(playedPieces);
+
+	if(remainingPieceIDs.sort().toString() == playedPieces.sort().toString()){
+		return false;
+	} else {
+		// console.log(remainingPieceIDs);
+		// console.log(playedPieces);
+		return true;
+	}
+}
+
+function deepCopy2DArray(arr){
+  	let copy = [];
+  	arr.forEach(elem => {
+	    if(Array.isArray(elem)){
+	     	 copy.push(deepCopy2DArray(elem))
+    }else {
+        copy.push(elem)
+    }
+  });
+  return copy;
+}
