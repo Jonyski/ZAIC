@@ -259,18 +259,18 @@ FLEXBOX AND GRID ALONE CAN'T BEHAVE THE WAY I WANT
 	color: #cf4813;
 	font-size: 1.2em;
 
-	background: #f7d040;
-	background: -webkit-linear-gradient(to bottom left, #f7d040, #f5a13b 85%, #f78a45);
-	background: linear-gradient(to bottom left, #f7d040, #f5a13b 85%, #f78a45);
+	background: #f3d55d;
+	background: -webkit-linear-gradient(to bottom left, #f3d55d, #f29140 85%, #f25b40);
+	background: linear-gradient(to bottom left, #f3d55d, #f29140 85%, #f25b40);
 }
 
 .P2-piece {
 	color: #272c8c;
 	font-size: 1.2em;
 
-	background: #3b97ed;
-	background: -webkit-linear-gradient(to bottom left, #3b97ed, #3052db 85%, #4430db);
-	background: linear-gradient(to bottom left, #3b97ed, #3052db 85%, #4430db);
+	background: #40aef5;
+	background: -webkit-linear-gradient(to bottom left, #40aef5, #124fd3 85%, #18339e);
+	background: linear-gradient(to bottom left, #40aef5, #124fd3 85%, #18339e);
 }
 
 .piece-button:hover, #start-stop-btn:hover {
