@@ -571,6 +571,8 @@ function deepCopy2DArray(arr){
 
 const style = (node, styles) => Object.keys(styles).forEach(key => node.style[key] = styles[key])
 
+
+// this function does not work at the moment. Ignore it
 function resetBoard(){
 	boardElement.innerHTML = ""
 
@@ -627,9 +629,20 @@ function resetBoard(){
 function startGame(){
 	gameStarted = true;
 
-	// resetBoard();
+	location.reload();
 }
 
 function endGame(){
 	gameStarted = false;
+
+	// initialize the matrixes that will go through the algorithm that determines the winner 
+	let finalBoardP1Isles = [...Array(board.length)].map(i => Array(board[0].length));
+	let finalBoardP2Isles = [...Array(board.length)].map(i => Array(board[0].length));
+
+	for(let i = 0; i < board.length; i++){
+		finalBoardP1Isles[i] = board[i].map(el => el.dataset.owner == "1" ? 1 : 0);
+		finalBoardP2Isles[i] = board[i].map(el => el.dataset.owner == "2" ? 1 : 0);
+	}
+
+	console.log(finalBoardP1Isles);
 }
